@@ -4,8 +4,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import java.util.List;
-
 public class SBHData implements INBTSerializable<CompoundTag> {
     private Vec3 back = Vec3.ZERO;
     private Vec3 home = Vec3.ZERO;
@@ -30,8 +28,8 @@ public class SBHData implements INBTSerializable<CompoundTag> {
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
-        tag.putIntArray("talent", readvec3( back));
-        tag.putIntArray("back", readvec3( home));
+        tag.putIntArray("back", readvec3( back));
+        tag.putIntArray("home", readvec3( home));
         return tag;
     }
 
@@ -42,9 +40,11 @@ public class SBHData implements INBTSerializable<CompoundTag> {
     }
 
     public int[] readvec3(Vec3 back){
+        if (back == null) return new int[]{0, 0, 0};
         return new int[]{(int)back.x, (int)back.y, (int)back.z};
     }
     public Vec3 writevec3(int[] back){
+        if (back.length!=3) return Vec3.ZERO;
         return new Vec3(back[0], back[1], back[2]);
     }
 }
