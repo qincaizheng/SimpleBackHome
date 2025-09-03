@@ -1,11 +1,13 @@
 package com.qdd.sbh.event;
 
+import com.qdd.sbh.cap.SBHData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import com.qdd.sbh.SBH;
 import com.qdd.sbh.cap.SBHCapProvider;
 import com.qdd.sbh.command.SBHCommand;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -26,14 +28,20 @@ public class SBHEvent {
         }
     }
     @SubscribeEvent
+    public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+        event.register(SBHData.class);
+    }
+    @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
         if (event.isWasDeath()) {
             // 玩家死亡时保留数据
+            event.getOriginal().reviveCaps();
             event.getOriginal().getCapability(SBHCapProvider.PLAYER_DATA).ifPresent(oldData -> {
                 event.getEntity().getCapability(SBHCapProvider.PLAYER_DATA).ifPresent(newData -> {
                     newData.deserializeNBT(oldData.serializeNBT());
                 });
             });
+            event.getOriginal().invalidateCaps();
         }
     }
     @SubscribeEvent
