@@ -1,6 +1,6 @@
 name: Build 1.20.1 Mod
 
-on: [workflow_dispatch]
+on: [workflow_dispatch,push]
 
 permissions:
   contents: write
