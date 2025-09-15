@@ -24,7 +24,7 @@ public class SBHEvent {
     @SubscribeEvent
     public static void entityAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
-            event.addCapability(ResourceLocation.fromNamespaceAndPath(SBH.MODID,"sbh"),new SBHCapProvider());
+            event.addCapability(new ResourceLocation(SBH.MODID,"sbh"),new SBHCapProvider());
         }
     }
     @SubscribeEvent
